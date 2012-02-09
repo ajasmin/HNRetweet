@@ -1,0 +1,5 @@
+(ns HNRetweet.creds)
+
+; fill out and copy to creds.clj
+(def dot-ly-login "my-login")
+(def dot-ly-key "my-key")
