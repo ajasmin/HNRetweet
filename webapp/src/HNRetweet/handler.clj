@@ -19,9 +19,10 @@
   (GET "/cron/fetch-new-backlinks" []
        (let [last-tweet-id (get-prop "last-tweet-id")
              backlinks (fetch-new-backlinks last-tweet-id)]
-         (put-entities
-           (map (fn [[hnid twid]] ["backlink" hnid {"tweet-id" twid}]) backlinks))
-         (set-prop "last-tweet-id" (second (first backlinks)))
+         (when (seq backlinks)
+           (put-entities
+             (map (fn [[hnid twid]] ["backlink" hnid {"tweet-id" twid}]) backlinks))
+           (set-prop "last-tweet-id" (second (first backlinks))))
          (info (str "Fetched " (count backlinks) " tweets")))
        "OK")
   (route/not-found "Page not found"))
