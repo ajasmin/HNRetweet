@@ -14,7 +14,7 @@
            {:status 302 ; Retweet
             :headers {"Location" (str "http://twitter.com/intent/retweet?tweet_id=" twid)}}
            {:status 302 ; If we can't find this tweet post a new one
-            :headers {"Location" (str "http://twitter.com/intent/retweet?text="
+            :headers {"Location" (str "http://twitter.com/intent/tweet?text="
                                       (url-encode (str "http://news.ycombinator.com/item?id=" hnid)))}})))
   (GET "/cron/fetch-new-backlinks" []
        (let [last-tweet-id (get-prop "last-tweet-id")
