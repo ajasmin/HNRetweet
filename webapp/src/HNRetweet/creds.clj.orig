@@ -1,5 +1,17 @@
 (ns HNRetweet.creds)
 
-; fill out and copy to creds.clj
+; fill out secrets and copy to creds.clj
+
 (def dot-ly-login "my-login")
 (def dot-ly-key "my-key")
+
+(def twitter-consumer (oauth/make-consumer
+                        "consumer token"
+                        "consumer token secret"
+                        "http://twitter.com/oauth/request_token"
+                        "http://twitter.com/oauth/access_token"
+                        "http://twitter.com/oauth/authorize"
+                        :hmac-sha1))
+
+(def twitter-token "my-token")
+(def twitter-secret "my-secret")

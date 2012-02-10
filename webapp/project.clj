@@ -5,5 +5,6 @@
                  [ring "1.0.2"]
                  [compojure "1.0.1"]
                  [cheshire "2.1.0"]
+                 [clj-oauth-nohttp "1.3.1-SNAPSHOT"]
                  [com.google.appengine/appengine-api-1.0-sdk "1.6.2.1"]]
   :aot [HNRetweet.servlet])

@@ -1,14 +1,24 @@
 (ns HNRetweet.backlinks
   (:use [HNRetweet.rest])
-  (:require [HNRetweet.creds :as creds]))
+  (:require [HNRetweet.creds :as creds]
+            [oauth.client :as oauth]))
 
 (defn hn-tweets-page [page since]
-  (let [params {"screen_name" "HNTweets", "trim_user" 1,
-                "include_entities" 1, "exclude_replies" 1,
-                "count" 200, "page" page}]
-    (json-request
-      "https://api.twitter.com/1/statuses/user_timeline.json"
-      (if (nil? since) params (assoc params "since_id" since)))))
+  (let [url "https://api.twitter.com/1/statuses/user_timeline.json"
+        params {:screen_name "HNTweets", :trim_user 1,
+                :include_entities 1, :exclude_replies 1,
+                :count 200, :page page}
+        params (if (nil? since) params (assoc params :since_id since))
+        credentials (oauth/credentials creds/twitter-consumer
+                                       creds/twitter-token
+                                       creds/twitter-secret
+                                       :GET
+                                       url
+                                       params)
+        response (json-request url (merge credentials params))]
+    (if-let [e (:error response)]
+      (throw (new Error e))
+      response)))
 
 (defn hn-tweets [since]
   (doall
