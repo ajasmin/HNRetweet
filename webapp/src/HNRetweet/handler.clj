@@ -23,7 +23,7 @@
            (put-entities
              (map (fn [[hnid twid]] ["backlink" hnid {"tweet-id" twid}]) backlinks))
            (set-prop "last-tweet-id" (second (first backlinks))))
-         (info (str "Fetched " (count backlinks) " tweets")))
+         (info (str "Fetched " (count (into #{} (map second backlinks))) " tweets")))
        "OK")
   (route/not-found "Page not found"))
 
