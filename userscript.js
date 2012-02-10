@@ -9,7 +9,7 @@
 
 [].filter.call(
   document.getElementsByTagName('a'),
-  function(a) {return a.text && a.text.match(/^(\d+ comments|discuss)$/)}
+  function(a) {return a.text && a.text.match(/^((\d+ )?comments|discuss)$/)}
 ).forEach(function(a) {
   var m;
   if (a.href && (m = a.href.match(/^http:\/\/news\.ycombinator\.com\/item\?id=(\d+)$/))) {
