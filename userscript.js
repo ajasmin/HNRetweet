@@ -17,7 +17,8 @@
     newa.href = "http://hn-retweet.appspot.com/retweet/" + m[1];
     newa.appendChild(document.createTextNode("Retweet"));
     newa.onclick = function() {
-      return !window.open(this.href, "hnrtw", "width=550,height=450,personalbar=0,toolbar=0,scrollbars=1,resizable=1,left=408,top=159");
+      window.open(this.href, "hnrtw", "width=550,height=450,personalbar=0,toolbar=0,scrollbars=1,resizable=1,left=408,top=159");
+      return false;
     };
     a.parentNode.insertBefore(newa, a);
     a.parentNode.insertBefore(document.createTextNode(" | "), a);
