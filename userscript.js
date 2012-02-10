@@ -7,7 +7,7 @@
 // @include        http://news.ycombinator.com/*
 // ==/UserScript==
 
-Array.filter(
+[].filter.call(
   document.getElementsByTagName('a'),
   function(a) {return a.text && a.text.match(/^(\d+ comments|discuss)$/)}
 ).forEach(function(a) {
