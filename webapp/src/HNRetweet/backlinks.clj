@@ -55,7 +55,7 @@
         hn-reg #"http://news\.ycombinator\.com/item\?id=(\d+)"]
     (for [t tweets
           url (keep :expanded_url (-> t :entities :urls))
-          :let [expanded (expanded-urls url)
+          :let [expanded (get expanded-urls url url)
                 tid (t :id)]
           :when expanded]
       (if-let [m (re-matches hn-reg expanded)]
