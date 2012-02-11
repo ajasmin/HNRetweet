@@ -35,15 +35,15 @@ function retweet_link(node, href) {
 x(document, '//td[@class="title"]/../following-sibling::*[1]//text()').filter(
 	function(n) {return n.nodeValue.match(/ago( +\| *)?$/)}
 ).forEach(function(n) {
-	var title_a, title_part, m;
+	var title_a, qs, m;
 	if (title_a = x(n, '../../preceding-sibling::*[1]/td[@class="title"]/a[@href]')[0]) {
-		title_part = "title=" + encodeURIComponent(title_a.childNodes[0].nodeValue);
+		qs = "?url=" + encodeURIComponent(title_a.href) + "&title=" + encodeURIComponent(title_a.childNodes[0].nodeValue);
 		if (n.nextSibling && (m = n.nextSibling.href.match(/^http:\/\/news\.ycombinator\.com\/item\?id=(\d+)$/))) {
 			// Have a comment link with hn id
-			retweet_link(n, "http://hn-retweet.appspot.com/retweet/" + m[1] + "?" + title_part);
+			retweet_link(n, "http://hn-retweet.appspot.com/retweet/" + m[1] + qs);
 		} else {
 			// No id use article link
-			retweet_link(n, "http://hn-retweet.appspot.com/retweet?url=" + encodeURIComponent(title_a.href) + "&" + title_part);
+			retweet_link(n, "http://hn-retweet.appspot.com/retweet" + qs);
 		}
 	}
 });
