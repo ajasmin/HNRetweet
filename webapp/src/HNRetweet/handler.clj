@@ -9,23 +9,23 @@
 
 (defroutes main-routes
   ; Retweet based on hacker news post id
-  (GET ["/retweet/:hnid" :hnid #"[0-9]+"] [hnid]
+  (GET ["/retweet/:hnid" :hnid #"[0-9]+"] [url title hnid]
        (let [hnid (read-string hnid)]
          (if-let [twid (get (get-entity "backlink" hnid) "tweet-id")]
            {:status 302 ; Retweet
             :headers {"Location" (str "http://twitter.com/intent/retweet?tweet_id=" twid)}}
            {:status 302 ; If we can't find this tweet post a new one
-            :headers {"Location" (str "http://twitter.com/intent/tweet?text="
-                                      (url-encode (str "http://news.ycombinator.com/item?id=" hnid)))}})))
+            :headers {"Location" (str "http://twitter.com/intent/tweet?text=" (url-encode
+                                      (str (if title (str title ": ")) (if url (str url " ")) "Comments: http://news.ycombinator.com/item?id=" hnid)))}})))
   ; Retweet based on post url
-  (GET "/retweet" {params :params}
-       (if-let [url (:url params)]
+  (GET "/retweet" [url title]
+       (if url
          (if-let [twid (get (get-entity "backlink" url) "tweet-id")]
            {:status 302 ; Retweet
             :headers {"Location" (str "http://twitter.com/intent/retweet?tweet_id=" twid)}}
            {:status 302 ; If we can't find this tweet post a new one
             :headers {"Location" (str "http://twitter.com/intent/tweet?text="
-                                      (url-encode (str url)))}})
+                                      (apply str (if title (str title ": ")) url))}})
          {:status 404, :body "Page not found"}))
 
   (GET "/cron/fetch-new-backlinks" []
