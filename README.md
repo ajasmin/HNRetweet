@@ -28,7 +28,7 @@ Then set that folder as the userscripts folder in:
 
 A [Compojure][5] web app running on [App Engine][6] receives new tweets from @HNTweets and maintains a list of backlinks from each HN post to the corresponding tweet.
 
-The user script adds *retweet* links to each post containing the post id from the comment link or the post URL if there isn't a comment link. These links refer to an (hn-retweet.appspot.com/retweet/...) URL for the webapp that redirect to the coresponding [retweet intent][7].
+The user script adds *retweet* links to each post containing the post id from the comment link or the post URL if there isn't a comment link. These links point to an (hn-retweet.appspot.com/retweet/...) URL for the webapp that redirect to the coresponding [retweet intent][7].
 
 
   [1]: http://news.ycombinator.com
