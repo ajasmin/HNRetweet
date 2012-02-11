@@ -7,21 +7,47 @@
 // @include        http://news.ycombinator.com/*
 // ==/UserScript==
 
-[].filter.call(
-  document.getElementsByTagName('a'),
-  function(a) {return a.text && a.text.match(/^((\d+ )?comments?|discuss)$/)}
-).forEach(function(a) {
-  var m;
-  if (a.href && (m = a.href.match(/^http:\/\/news\.ycombinator\.com\/item\?id=(\d+)$/))) {
-    var newa = document.createElement('a');
-    newa.href = "http://hn-retweet.appspot.com/retweet/" + m[1];
-    newa.appendChild(document.createTextNode("retweet"));
-    newa.onclick = function() {
+(function() {
+
+function x(node, xpath) {
+	var iter, n, arr;
+
+	iter = document.evaluate(xpath, node, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+	arr = [];
+	while (n = iter.iterateNext()) {
+		arr.push(n);
+	}
+	return arr;
+}
+
+function retweet_link(node, href) {
+    var a = document.createElement('a');
+    a.href = href;
+    a.appendChild(document.createTextNode("retweet"));
+    a.onclick = function() {
       window.open(this.href, "hnrtw", "width=550,height=450,personalbar=0,toolbar=0,scrollbars=1,resizable=1,left=408,top=159");
       return false;
     };
-    a.parentNode.insertBefore(newa, a);
-    a.parentNode.insertBefore(document.createTextNode(" | "), a);
-  }
+    node.parentNode.insertBefore(a, node.nextSibling);
+    node.parentNode.insertBefore(document.createTextNode(" | "), node.parentNode.lastChild);
+}
+
+x(document, '//td[@class="title"]/../following-sibling::*[1]//text()').filter(
+	function(n) {return n.nodeValue.match(/ago( +\| *)?$/)}
+).forEach(function(n) {
+	var title_a, title_part, m;
+	if (title_a = x(n, '../../preceding-sibling::*[1]/td[@class="title"]/a[@href]')[0]) {
+		title_part = "title=" + encodeURIComponent(title_a.childNodes[0].nodeValue);
+		if (n.nextSibling && (m = n.nextSibling.href.match(/^http:\/\/news\.ycombinator\.com\/item\?id=(\d+)$/))) {
+			// Have a comment link with hn id
+			retweet_link(n, "http://hn-retweet.appspot.com/retweet/" + m[1] + "?" + title_part);
+		} else {
+			// No id use article link
+			retweet_link(n, "http://hn-retweet.appspot.com/retweet?url=" + encodeURIComponent(title_a.href) + "&" + title_part);
+		}
+	}
 });
+
+
+})();
 
