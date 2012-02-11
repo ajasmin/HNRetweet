@@ -22,7 +22,7 @@ Then set that folder as the userscripts folder in:
 ![Install](https://github.com/ajasmin/HNRetweet/raw/master/media/install.png)
 ][4]
 
-*Note: I'm not sure about other browsers. Let me know if it works...*
+*Note: I'm not sure about other browsers. Let me know if it works for you...*
 
 **Design:**
 
