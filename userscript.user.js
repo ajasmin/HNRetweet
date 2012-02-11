@@ -21,15 +21,15 @@ function x(node, xpath) {
 }
 
 function retweet_link(node, href) {
-    var a = document.createElement('a');
-    a.href = href;
-    a.appendChild(document.createTextNode("retweet"));
-    a.onclick = function() {
-      window.open(this.href, "hnrtw", "width=550,height=450,personalbar=0,toolbar=0,scrollbars=1,resizable=1,left=408,top=159");
-      return false;
-    };
-    node.parentNode.insertBefore(a, node.nextSibling);
-    node.parentNode.insertBefore(document.createTextNode(" | "), a.nextSibling);
+	var a = document.createElement('a');
+	a.href = href;
+	a.appendChild(document.createTextNode("retweet"));
+	a.onclick = function() {
+		window.open(this.href, "hnrtw", "width=550,height=450,personalbar=0,toolbar=0,scrollbars=1,resizable=1,left=408,top=159");
+		return false;
+	};
+	node.parentNode.insertBefore(a, node.nextSibling);
+	node.parentNode.insertBefore(document.createTextNode(" | "), a.nextSibling || a);
 }
 
 function add_links() {
