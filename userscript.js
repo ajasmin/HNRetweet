@@ -32,7 +32,7 @@ function retweet_link(node, href) {
     node.parentNode.insertBefore(document.createTextNode(" | "), node.parentNode.lastChild);
 }
 
-window.addEventListener('load', function() {
+function add_links() {
 	x(document, '//td[@class="title"]/../following-sibling::*[1]//text()').filter(
 		function(n) {return n.nodeValue.match(/ago( +\| *)?$/)}
 	).forEach(function(n) {
@@ -48,7 +48,13 @@ window.addEventListener('load', function() {
 			}
 		}
 	});
-}, false);
+}
+
+if (document.readyState === "complete") {
+	add_links();
+} else {
+	window.addEventListener('load', add_links, false);
+}
 
 })();
 
