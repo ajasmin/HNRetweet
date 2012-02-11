@@ -6,7 +6,7 @@ HNRetweet is an userscript that adds *retweet* links to the [Hacker News][1] sit
 ![Screenshot 1](https://github.com/ajasmin/HNRetweet/raw/master/media/hn1.png)
 
 Clicking on a *retweet* link for a story lets you retweet that story from [@HNTweets][2].  
-If a low-profile story wasn't tweeted by @HNTweets the script lets you send a tweet in the same format.
+If a low-profile story wasn't tweeted by @HNTweets the script lets you send a new tweet in the same format.
 
 ![Screenshot 2](https://github.com/ajasmin/HNRetweet/raw/master/media/hn3.png)
 
