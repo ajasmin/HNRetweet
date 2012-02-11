@@ -29,7 +29,7 @@ function retweet_link(node, href) {
       return false;
     };
     node.parentNode.insertBefore(a, node.nextSibling);
-    node.parentNode.insertBefore(document.createTextNode(" | "), node.parentNode.lastChild);
+    node.parentNode.insertBefore(document.createTextNode(" | "), a.nextSibling);
 }
 
 function add_links() {
