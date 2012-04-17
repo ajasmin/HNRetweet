@@ -33,7 +33,8 @@
              backlinks (fetch-new-backlinks last-tweet-id)]
          (when (seq backlinks)
            (put-entities
-             (map (fn [[hnid twid]] ["backlink" hnid {"tweet-id" twid}]) backlinks))
+             (map (fn [[hnid twid]] ["backlink" hnid {"tweet-id" twid}])
+                  (filter (fn [[hnid twid]] (or (not (string? hnid)) (< (count hnid) 500))) backlinks))) ; datastore length restriction
            (set-prop "last-tweet-id" (second (first backlinks))))
          (info (str "Fetched " (count (into #{} (map second backlinks))) " tweets")))
        "OK")
