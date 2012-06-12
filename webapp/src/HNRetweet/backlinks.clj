@@ -27,37 +27,13 @@
       (take-while seq)
       (apply concat))))
 
-(defn expand-ly-chunk [urls]
-  (->>
-    (json-request "https://api-ssl.bitly.com/v3/expand"
-                  {"login" creds/dot-ly-login, "apiKey" creds/dot-ly-key,
-                   "shortUrl" urls})
-    (:data)
-    (:expand)
-    (map #(vector (:short_url %) (:long_url %)))
-    (remove #(nil? (second %)))
-    (into {})))
-
-(defn expand-ly [urls]
-  (->>
-     (partition-all 15 urls)
-     (map expand-ly-chunk)
-     (apply merge)))
-
-(defn expand-all-ly-urls-in-tweets [tweets]
-  (let [urls (keep :expanded_url (mapcat #(-> % :entities :urls) tweets))
-        ly-urls (filter #(re-matches #"http://\w+\.ly/\w+" %) urls)]
-    (expand-ly ly-urls)))
-
 (defn fetch-new-backlinks [since-tweet-id]
   (let [tweets (hn-tweets since-tweet-id)
-        expanded-urls (expand-all-ly-urls-in-tweets tweets)
         hn-reg #"http://news\.ycombinator\.com/item\?id=(\d+)"]
     (for [t tweets
           url (keep :expanded_url (-> t :entities :urls))
-          :let [expanded (get expanded-urls url url)
-                tid (t :id)]
-          :when expanded]
-      (if-let [m (re-matches hn-reg expanded)]
+          :let [tid (t :id)]
+          :when url]
+      (if-let [m (re-matches hn-reg url)]
         [(read-string (second m)) tid]
-        [expanded tid]))))
+        [url tid]))))
