@@ -30,11 +30,7 @@
       (.get (datastore))
       (.getProperties)
       (into {}))
-    (catch EntityNotFoundException e nil)
-    (catch Exception e
-      (if (instance? EntityNotFoundException (.getCause e))
-        nil
-        (throw e)))))
+    (catch EntityNotFoundException e nil)))
 
 (defn set-prop [name val]
   (put-entity "prop" name {"value" val}))
