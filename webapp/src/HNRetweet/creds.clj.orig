@@ -2,9 +2,6 @@
 
 ; fill out secrets and copy to creds.clj
 
-(def dot-ly-login "my-login")
-(def dot-ly-key "my-key")
-
 (def twitter-consumer (oauth/make-consumer
                         "consumer token"
                         "consumer token secret"
