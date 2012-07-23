@@ -5,6 +5,7 @@
 //
 //
 // @include        http://news.ycombinator.com/*
+// @include        https://news.ycombinator.com/*
 // ==/UserScript==
 
 (function() {
