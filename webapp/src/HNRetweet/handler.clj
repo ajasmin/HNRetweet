@@ -1,6 +1,7 @@
 (ns HNRetweet.handler
   (:use [compojure.core]
         [ring.util.codec :only [url-encode]]
+        [ring.util.response :only [redirect]]
         [clojure.tools.logging :only [info]]
         [HNRetweet.datastore]
         [HNRetweet.backlinks :only [fetch-new-backlinks]])
@@ -12,21 +13,23 @@
   (GET ["/retweet/:hnid" :hnid #"[0-9]+"] [url title hnid]
        (let [hnid (read-string hnid)]
          (if-let [twid (get (get-entity "backlink" hnid) "tweet-id")]
-           {:status 302 ; Retweet
-            :headers {"Location" (str "http://twitter.com/intent/retweet?tweet_id=" twid)}}
-           {:status 302 ; If we can't find this tweet post a new one
-            :headers {"Location" (str "http://twitter.com/intent/tweet?text=" (url-encode
-                                      (str (if title (str title ": ")) (if url (str url " ")) "Comments: http://news.ycombinator.com/item?id=" hnid)))}})))
+           (redirect (str "http://twitter.com/intent/retweet?tweet_id=" twid))
+           ; If we can't find this tweet post a new one
+           (redirect (str "http://twitter.com/intent/tweet?text=" (url-encode
+             (str
+              (if title (str title ": "))
+              (if url (str url " "))
+              "Comments: http://news.ycombinator.com/item?id=" hnid)))))))
+
   ; Retweet based on post url
   (GET "/retweet" [url title]
-       (if url
+       (when url
          (if-let [twid (get (get-entity "backlink" url) "tweet-id")]
-           {:status 302 ; Retweet
-            :headers {"Location" (str "http://twitter.com/intent/retweet?tweet_id=" twid)}}
-           {:status 302 ; If we can't find this tweet post a new one
-            :headers {"Location" (str "http://twitter.com/intent/tweet?text="
-                                      (apply str (if title (str title ": ")) url))}})
-         {:status 404, :body "Page not found"}))
+           (redirect; Retweet
+             (str "http://twitter.com/intent/retweet?tweet_id=" twid))
+           (redirect ; If we can't find this tweet post a new one
+             (str "http://twitter.com/intent/tweet?text="
+               (url-encode (str (if title (str title ": ")) url)))))))
 
   (GET "/cron/fetch-new-backlinks" []
        (let [last-tweet-id (get-prop "last-tweet-id")
@@ -38,7 +41,7 @@
            (set-prop "last-tweet-id" (second (first backlinks))))
          (info (str "Fetched " (count (into #{} (map second backlinks))) " tweets")))
        "OK")
-  (route/not-found "Page not found"))
+  (route/not-found "Not Found"))
 
 (def handler
-    (handler/site main-routes))
+    (handler/api main-routes))
