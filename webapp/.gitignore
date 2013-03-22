@@ -1,7 +1,5 @@
 pom.xml
-*jar
-/lib/
-/classes/
+/target/
 .lein-failures
 .lein-deps-sum
 /war/WEB-INF/appengine-generated

@@ -1,1 +1,1 @@
-lein compile && appcfg.sh update war
+lein uberjar && appcfg.sh --enable_jar_splitting update war

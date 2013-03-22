@@ -1,1 +1,1 @@
-lein compile && dev_appserver.sh war
+lein uberjar && dev_appserver.sh war
