@@ -29,7 +29,7 @@
 
 (defn fetch-new-backlinks [since-tweet-id]
   (let [tweets (hn-tweets since-tweet-id)
-        hn-reg #"http://news\.ycombinator\.com/item\?id=(\d+)"]
+        hn-reg #"https?://news\.ycombinator\.com/item\?id=(\d+)"]
     (for [t tweets
           url (keep :expanded_url (-> t :entities :urls))
           :let [tid (t :id)]
