@@ -13,7 +13,7 @@ If a low-profile story wasn't tweeted by @HNTweets the script lets you send a ne
 **Installing:**
 
 - In Firefox install [Greasemonkey][3] and click on the install button bellow.
-- In Chrome just click on the install button bellow.
+- In Chrome install [Tampermonkey][8] and click on the install button bellow.
 - In Opera right-click on the button bellow select *"Save Linked Content As..."* and put the script in an empty folder  
 Then set that folder as the userscripts folder in:  
 [Opera button] > [Settings] > [Preferences] / [Advanced] / [Content] / [JavaScript options]
@@ -38,3 +38,4 @@ The user script build a *retweet* links for each post based on the post id from 
   [5]: https://github.com/weavejester/compojure
   [6]: http://code.google.com/appengine/
   [7]: https://dev.twitter.com/docs/intents#retweet-intent
+  [8]: https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo
