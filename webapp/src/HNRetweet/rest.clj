@@ -8,12 +8,5 @@
 
 (defn json-request [url params]
   (let [url (build-url url params)
-        f (fn f [try-count]
-            (try
-              (let [contents (slurp url)]
-                (json/parse-string contents true))
-              (catch java.io.IOException e
-                (warn (str "Error fetching " url " Retry " try-count))
-                (Thread/sleep 10000)
-                (f (inc try-count)))))]
-    (f 1)))
+        contents (slurp url)]
+                (json/parse-string contents true)))
