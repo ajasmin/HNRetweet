@@ -3,11 +3,11 @@
   (:require [HNRetweet.creds :as creds]
             [oauth.client :as oauth]))
 
-(defn hn-tweets-page [page since]
-  (let [url "https://api.twitter.com/1/statuses/user_timeline.json"
+(defn hn-tweets-range [max since]
+  (let [url "https://api.twitter.com/1.1/statuses/user_timeline.json"
         params {:screen_name "HNTweets", :trim_user 1,
-                :include_entities 1, :exclude_replies 1,
-                :count 200, :page page}
+                :exclude_replies 1, :count 200}
+        params (if (nil? max) params (assoc params :max_id max))
         params (if (nil? since) params (assoc params :since_id since))
         credentials (oauth/credentials creds/twitter-consumer
                                        creds/twitter-token
@@ -21,11 +21,11 @@
       response)))
 
 (defn hn-tweets [since]
-  (doall
-    (->>
-      (map #(hn-tweets-page % since) (iterate inc 1))
-      (take-while seq)
-      (apply concat))))
+  (loop [max nil tweets []]
+    (let [ts (hn-tweets-range max since)]
+      (if (seq ts)
+          (recur (dec (:id (last ts))) (concat tweets ts))
+          tweets))))
 
 (defn fetch-new-backlinks [since-tweet-id]
   (let [tweets (hn-tweets since-tweet-id)
